@@ -68,12 +68,19 @@ gulp.task('clean', function() {
 });
 
 
-// Build ********************
+// Pre-build ********************
 
-gulp.task('build', ['scripts', 'styles', 'images'], function() {
+gulp.task('pre-build', ['scripts', 'styles', 'images'], function() {
   return gulp.src(['css/all.min.css','js/all.min.js','index.html',
                    'icons/**', 'icons/svg/**'], { base: './'})
             .pipe(gulp.dest('dist'));
+});
+
+
+// Build ******************
+
+gulp.task('build', ['clean'], function() {
+  gulp.start('pre-build');
 });
 
 
@@ -83,5 +90,3 @@ gulp.task('default', ['clean'], function() {
   gulp.start('build');
   gulp.watch('sass/**/*.scss', ['styles']);
 });
-
-
