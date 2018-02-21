@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     maps = require('gulp-sourcemaps'),
      del = require('del'),
 cleanCSS = require('gulp-clean-css'),
-   image = require('gulp-image');
+   image = require('gulp-image'),
+connect = require('gulp-connect');
 
 
 // Scripts ******************
@@ -68,7 +69,7 @@ gulp.task('clean', function() {
 });
 
 
-// Pre-build ********************
+// Pre-build ****************
 
 gulp.task('pre-build', ['scripts', 'styles', 'images'], function() {
   return gulp.src(['css/all.min.css','js/all.min.js','index.html',
@@ -77,16 +78,27 @@ gulp.task('pre-build', ['scripts', 'styles', 'images'], function() {
 });
 
 
-// Build ******************
+// Build ********************
 
 gulp.task('build', ['clean'], function() {
   gulp.start('pre-build');
 });
 
 
+// Webserver ****************
+
+gulp.task('webserver', function() {
+    connect.server({
+    root: "dist",
+    livereload: true,
+    port: 8000,
+    host: '0.0.0.0'
+  });
+});
+
 // Default ******************
 
-gulp.task('default', ['clean'], function() {
-  gulp.start('build');
+gulp.task('default', ['build', 'webserver'], function() {
   gulp.watch('sass/**/*.scss', ['styles']);
+
 });
