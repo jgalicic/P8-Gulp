@@ -14,7 +14,7 @@ connect = require('gulp-connect');
 
 // Scripts ******************
 
-gulp.task('concatScripts', function() {
+gulp.task('scripts', function() {
     return gulp.src([
       'js/global.js',
       'js/circle/autogrow.js',
@@ -22,34 +22,22 @@ gulp.task('concatScripts', function() {
       ])
     .pipe(maps.init())
     .pipe(concat('app.js'))
+    .pipe(uglify())
+    .pipe(rename('all.min.js'))
     .pipe(maps.write('./'))
     .pipe(gulp.dest('dist/scripts'));
 });
 
-gulp.task('scripts', ['concatScripts'], function() {
-  return gulp.src('dist/scripts/app.js')
-    .pipe(uglify())
-    .pipe(rename('all.min.js'))
-    .pipe(gulp.dest('dist/scripts'));
-});
-
-
 // Styles *******************
 
-gulp.task('compileSass', function() {
+gulp.task('styles', function() {
   return gulp.src('sass/global.scss')
-      .pipe(rename('all.css'))
-      .pipe(maps.init())
-      .pipe(sass())
-      .pipe(maps.write('./'))
-      .pipe(gulp.dest('dist/styles'));
-});
-
-gulp.task('styles', ['compileSass'], function() {
-  return gulp.src('dist/styles/all.css')
-    .pipe(cleanCSS())
-    .pipe(rename('all.min.css'))
-    .pipe(gulp.dest('dist/styles'));
+        .pipe(maps.init())
+        .pipe(sass())
+        .pipe(cleanCSS())
+        .pipe(rename('all.min.css'))
+        .pipe(maps.write('./'))
+        .pipe(gulp.dest('dist/styles'))
 });
 
 
